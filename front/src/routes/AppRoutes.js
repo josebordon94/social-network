@@ -13,14 +13,14 @@ const routes = () => {
   return (
     <>
       <BrowserRouter>
-        {jwt ? <Navigation /> : null}
+        <Navigation />
 
         <Container
           className="m-0 p-0 m-md-auto pt-3"
           style={{ maxWidth: '700px' }}
         >
           <Switch>
-            {jwt ? null : <Redirect to="/login" />}
+            {/* {jwt ? null : <Redirect to="/login" />} */}
             <Route path="/login" exact component={Login} />
             <Route path="/" exact component={Main} />
             <Route path="/inbox" exact component={Inbox} />

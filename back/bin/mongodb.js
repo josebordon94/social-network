@@ -8,4 +8,5 @@ mongoose.connect(direccion, { useNewUrlParser: true }, function (error) {
     console.log('Successfully connected to ' + dataBaseName)
   }
 })
+
 module.exports = mongoose

@@ -1,18 +1,42 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useHistory } from 'react-router'
 import { Container } from 'react-bootstrap'
+import { login as loginService } from '../services/authServices'
 
 const Login = () => {
+  const history = useHistory()
+
+  async function handleLogin(e) {
+    e.preventDefault()
+    const form = e.target
+    const user = {
+      username: form[0].value,
+      password: form[1].value,
+    }
+    fetch('http://localhost:4000/auth' + '/login', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(user),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        localStorage.setItem('token', data.token)
+      })
+  }
+
   return (
     <Container className="mt-3">
-      <form>
+      <form onSubmit={(event) => handleLogin(event)}>
         <h3>Iniciar sesión</h3>
 
         <div className="form-group">
           <label>Email address</label>
           <input
-            type="email"
+            type="text"
             className="form-control"
-            placeholder="Enter email"
+            placeholder="Enter username"
           />
         </div>
 
@@ -41,9 +65,6 @@ const Login = () => {
         <button type="submit" className="btn btn-primary btn-block">
           Submit
         </button>
-        <p className="forgot-password text-right">
-          Forgot <a href="#">password?</a>
-        </p>
       </form>
     </Container>
   )
