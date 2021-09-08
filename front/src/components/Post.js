@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Image } from 'react-bootstrap'
 import OptionsModal from './OptionsModal'
 import IconButton from '@material-ui/core/IconButton'
@@ -7,8 +7,29 @@ import CommentIcon from '@material-ui/icons/Comment'
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder'
 import TextareaAutosize from '@material-ui/core/TextareaAutosize'
 import PublishIcon from '@material-ui/icons/Publish'
-const Post = () => {
-  const styles = {}
+import { getImageUrl } from '../services/fileService'
+import { comment as commentService } from '../services/postServices'
+import { useHistory } from 'react-router'
+
+const Post = (props) => {
+  const history = useHistory()
+  const { text, likes, file, createdAt, comments, _id } = props.postData
+  console.log('CM: ', comments)
+  const date = new Date(createdAt)
+  const [commentText, setCommentText] = useState('')
+  const { username, userPhoto } = props
+
+  async function comment() {
+    console.log(commentText)
+    const commentData = {
+      post: _id,
+      text: commentText,
+    }
+    const result = await commentService(commentData)
+    history.go(0)
+    console.log('R: ', result)
+  }
+
   return (
     <>
       <div className="card mb-3">
@@ -19,30 +40,22 @@ const Post = () => {
           <span>
             {' '}
             <Image
-              src="/avatar.png"
+              src={getImageUrl(userPhoto)}
               roundedCircle
-              style={{ maxHeight: '40px', maxWidth: '40px' }}
+              style={{ height: '40px', width: '40px' }}
               className="ms-auto"
             />
-            <span style={{ marginLeft: '7px' }}>Juan Pérez</span>
+            <span style={{ marginLeft: '7px' }}>{username}</span>
           </span>
           <OptionsModal />
         </div>
-        <Image src="/testPhoto.jpg" fluid />
+        <Image src={getImageUrl(file)} fluid />
         <div className="d-flex justify-content-between my-2">
           <div>
-            <IconButton
-              aria-label=""
-              // size="large"
-              style={{ marginTop: '-14px' }}
-            >
+            <IconButton aria-label="" style={{ marginTop: '-14px' }}>
               <FavoriteBorderIcon fontSize="large" style={{ fill: 'black' }} />
             </IconButton>
-            <IconButton
-              aria-label=""
-              // size="large"
-              style={{ marginTop: '-14px' }}
-            >
+            <IconButton aria-label="" style={{ marginTop: '-14px' }}>
               <CommentIcon fontSize="large" style={{ fill: 'black' }} />
             </IconButton>
           </div>
@@ -51,27 +64,26 @@ const Post = () => {
           </IconButton>
         </div>
         <p className="card-text mx-3 fw-bold" style={{ marginTop: '-8px' }}>
-          155 likes{' '}
+          {likes.length > 0 && likes.length + ' likes &nbsp;&nbsp;'}
           <span className="fst-italic text-secondary">
-            &nbsp;&nbsp;(3 minutes ago)
+            ({date.toLocaleString()})
           </span>
         </p>
         <p className="card-text mx-3" style={{ marginTop: '-8px' }}>
-          Ejemplo de texto. Acá iría una fabulosa frase motivadora de Paulo
-          Coelho. No te rindas ante las adversidades.
+          {text}
         </p>
-        <p className="mx-3 fw-light fst-italic">Ver los 25 comentarios</p>
+        {comments.length > 0 && (
+          <p className="mx-3 fw-light fst-italic">{comments.length} comments</p>
+        )}
         <ul className="list-group list-group-flush">
-          <li className="list-group-item">
-            <span className="fw-bold mr-2">randomPerson41 &nbsp;&nbsp;</span>
-            WOW! Alta fotito bro no me la conteiner
-          </li>
-          <li className="list-group-item">
-            <span className="fw-bold mr-2">
-              unaChicaCualquiera85 &nbsp;&nbsp;
-            </span>
-            &#128151;&#128151;
-          </li>
+          {comments.map((el) => (
+            <li className="list-group-item" key={el._id}>
+              <span className="fw-bold mr-2">
+                {el.user.username} &nbsp;&nbsp;
+              </span>
+              {el.text}
+            </li>
+          ))}
         </ul>
         <div
           className="card-footer text-muted"
@@ -81,10 +93,12 @@ const Post = () => {
             <TextareaAutosize
               className="flex-fill"
               aria-label="empty textarea"
-              placeholder="Escriba un comentario..."
+              placeholder="Type a comment ..."
               style={{ border: 'none' }}
+              onChange={(e) => setCommentText(e.target.value)}
+              value={commentText}
             />
-            <IconButton aria-label="" size="large">
+            <IconButton aria-label="" onClick={comment}>
               <PublishIcon style={{ fill: 'black' }} />
             </IconButton>
           </div>

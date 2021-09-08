@@ -5,11 +5,10 @@ const secretKey = 'mySocialNetwork1234'
 
 function verifyJWT(req, res, next) {
   const token = req.headers['x-access-token']?.split(' ')[1]
-
   if (token) {
     jwt.verify(token, secretKey, (err, decoded) => {
       if (err)
-        return res.json({
+        return res.status(403).json({
           isLoggedIn: false,
           message: 'Failed to authenticate',
         })
@@ -19,7 +18,7 @@ function verifyJWT(req, res, next) {
       next()
     })
   } else {
-    res.json({ msg: 'Invalid token', isLoggedIn: false })
+    res.status(403).json({ msg: 'Invalid token', isLoggedIn: false })
   }
 }
 

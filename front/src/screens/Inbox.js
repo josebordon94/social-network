@@ -1,7 +1,8 @@
 import React from 'react'
+import Transition from '../components/Transition'
 
 const Inbox = () => {
-  return <div>Inbox</div>
+  return <Transition>Inbox</Transition>
 }
 
 export default Inbox

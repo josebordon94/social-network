@@ -14,6 +14,9 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    description: {
+      type: String,
+    },
     name: {
       type: String,
       minlength: 3,
@@ -26,6 +29,8 @@ const userSchema = new mongoose.Schema(
       maxlength: 50,
       required: true,
     },
+    following: [{ type: Schema.Types.ObjectId, ref: 'user' }],
+    photo: { type: String, required: true },
   },
   { timestamps: true },
 )

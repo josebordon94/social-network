@@ -4,31 +4,32 @@ const bcrypt = require('bcrypt')
 const jwtConfig = require('../bin/jwtConfig')
 const userModel = require('../models/userModel')
 
-module.exports = {
-  create: async function (req, res, next) {
-    console.log('Adding user: ', req.body)
-    try {
-      let user = new userModel({
-        name: req.body.name,
-        lastname: req.body.lastname,
-        username: req.body.username,
-        password: req.body.password,
-      })
-      await user.save()
-      res.json(user)
-    } catch (error) {
-      res.send(error)
-    }
+var path = require('path')
+
+const multer = require('multer')
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'public/img')
   },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname))
+  },
+})
+
+module.exports = {
   login: async function (req, res, next) {
     const userLoggingIn = req.body
     console.log('Logging in: ', userLoggingIn)
     try {
       const user = await userModel.findOne({ username: userLoggingIn.username })
       if (!user) {
-        res.json({ msg: 'Invalid data for login' })
+        res.status(403).json({ msg: "User doesn't exist" })
       }
-      const validPw = bcrypt.compare(userLoggingIn.password, user.password)
+      const validPw = await bcrypt.compare(
+        userLoggingIn.password,
+        user.password,
+      )
+      console.log('Valid pw: ', validPw)
       if (validPw) {
         const payload = {
           id: user._id,
@@ -47,7 +48,7 @@ module.exports = {
           },
         )
       } else {
-        return res.json({ msg: 'Invalid login data' })
+        return res.status(403).json({ msg: 'Incorrect password' })
       }
     } catch (error) {}
   },
@@ -68,6 +69,8 @@ module.exports = {
           password: user.password,
           name: user.name,
           lastname: user.lastname,
+          description: user.description,
+          photo: req.file.filename,
         })
         await newUser.save()
         res.json({ msg: 'success' })
