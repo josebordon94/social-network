@@ -13,19 +13,15 @@ export default function NewPost() {
   const [error, setError] = React.useState('')
   const onChange = (imageList, addUpdateIndex) => {
     // data for submit
-    console.log(imageList, addUpdateIndex)
     setImages(imageList)
     setError('')
   }
 
   async function handleSubmit(e) {
     e.preventDefault()
-    // console.log(e)
     if (images.length === 0) {
       setError('¡Debe elegir una foto!')
     } else {
-      console.log('Texto: ', text)
-      console.log('Imagen: ', images[0])
       await create(text, images[0])
       history.push('/profile/me')
     }

@@ -1,24 +1,36 @@
 import React, { useState, useEffect } from 'react'
 import { Image } from 'react-bootstrap'
 import Transition from '../components/Transition'
-import { getLoggedUserProfile } from '../services/postServices'
+import {
+  getLoggedUserProfile,
+  getGenericUserProfile,
+} from '../services/postServices'
 import CustomLargeSpinner from '../components/CustomLargeSpinner'
 import Post from '../components/Post'
 import { getImageUrl } from '../services/fileService'
+import { useParams } from 'react-router-dom'
 
-const Profile = () => {
+const MyProfile = (props) => {
+  const { id } = useParams() //Get the user ID if is a not-logged-in user profile
   const [loading, setLoading] = useState(true)
   const [user, setUser] = useState({ username: '' })
   const [posts, setPosts] = useState(null)
   useEffect(() => {
     async function getData() {
-      const data = await getLoggedUserProfile()
+      let data
+      if (id) {
+        //Show profile of url params user ID
+        data = await getGenericUserProfile(id)
+      } else {
+        //Show logged in user profile
+        data = await getLoggedUserProfile()
+      }
       setUser(data.data.user)
       setPosts(data.data.posts)
       setLoading(false)
     }
     getData()
-  }, [])
+  }, [id])
 
   if (loading) {
     return <CustomLargeSpinner />
@@ -37,6 +49,7 @@ const Profile = () => {
                 width: '8rem',
                 height: '8rem',
                 boxShadow: '2px 2px 2px 2px #444444',
+                objectFit: 'cover',
               }}
               className="text-center"
             />
@@ -72,4 +85,4 @@ const Profile = () => {
   )
 }
 
-export default Profile
+export default MyProfile

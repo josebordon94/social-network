@@ -37,7 +37,7 @@ const Login = () => {
     async function checkLoggedIn() {
       const auth = await isAuth()
       if (auth === false) {
-        console.log('All ok')
+        console.log('Session is ok')
       } else {
         history.push('/main')
       }

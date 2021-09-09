@@ -25,7 +25,11 @@ router.get('/', (req, res) => {
   res.send('In construction')
 })
 router.get('/profile', postController.getUserProfile)
+router.get('/genericProfile/:username', postController.getGenericUserProfile)
 router.get('/userHome', postController.getUserHome)
+router.get('/like/:id', postController.likePost)
+router.get('/unlike/:id', postController.unlikePost)
+router.get('/checkLike/:id', postController.checkLike)
 router.post('/comment', postController.comment)
 // router.get('/:id', postController.getByUserID)
 

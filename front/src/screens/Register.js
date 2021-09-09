@@ -24,7 +24,6 @@ export default function Register() {
 
   const onChange = (imageList, addUpdateIndex) => {
     // data for submit
-    console.log(imageList, addUpdateIndex)
     setImages(imageList)
     setError('')
   }
@@ -33,8 +32,6 @@ export default function Register() {
     if (images.length === 0) {
       setError('¡You must pick a profile picture!')
     } else {
-      console.log('Datos: ', data)
-      console.log('Image: ', images[0])
       await registerService(data, images[0])
       history.push('/login')
     }
@@ -60,6 +57,7 @@ export default function Register() {
           <input
             {...register('password', { required: true })}
             className="form-control"
+            type="password"
           />
           {errors.password && (
             <span className="text-danger">This field is required</span>

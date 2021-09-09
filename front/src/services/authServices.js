@@ -35,7 +35,6 @@ export const login = async function (loginData) {
 export const isAuth = async function () {
   try {
     if (localStorage.getItem('token') === null) return false
-    console.log('verifing user')
     const resp = await axios.get('/isUserAuth', {
       headers: {
         'x-access-token': localStorage.getItem('token'),

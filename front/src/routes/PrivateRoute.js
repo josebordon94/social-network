@@ -15,7 +15,6 @@ function PrivateRoute({ component: Component, ...rest }) {
     async function checkLoggedIn() {
       const auth = await isAuth()
       if (auth === false) {
-        console.log('undefined auth')
         history.push('/login')
       } else {
         setLoggedIn(true)

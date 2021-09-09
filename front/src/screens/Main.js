@@ -7,13 +7,18 @@ import CustomLargeSpinner from '../components/CustomLargeSpinner'
 const Main = () => {
   const [loading, setLoading] = useState(true)
   const [posts, setPosts] = useState(null)
+
+  async function getData() {
+    const data = await getLoggedUserHome()
+    setPosts(data.data)
+    setLoading(false)
+  }
+
+  const handleComment = async function () {
+    getData()
+  }
+
   useEffect(() => {
-    async function getData() {
-      const data = await getLoggedUserHome()
-      setPosts(data.data)
-      console.log(data.data)
-      setLoading(false)
-    }
     getData()
   }, [])
 
@@ -33,6 +38,7 @@ const Main = () => {
             username={post.user.username}
             userPhoto={post.user.photo}
             key={post._id}
+            refresh={handleComment}
           />
         ))}
       </Transition>

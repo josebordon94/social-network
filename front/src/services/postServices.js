@@ -28,6 +28,14 @@ export const create = async function (text, file_64) {
     },
   })
 }
+export const getGenericUserProfile = async function (id) {
+  return await axios.get('/posts/genericProfile/' + id, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      'x-access-token': localStorage.getItem('token'),
+    },
+  })
+}
 
 export const getLoggedUserProfile = async function () {
   return await axios.get('/posts/profile', {
@@ -49,6 +57,33 @@ export const getLoggedUserHome = async function () {
 
 export const comment = async function (commentData) {
   return await axios.post('/posts/comment', commentData, {
+    headers: {
+      'Content-type': 'application/json',
+      'x-access-token': localStorage.getItem('token'),
+    },
+  })
+}
+
+export const checkLike = async function (post_id) {
+  return await axios.get('/posts/checkLike/' + post_id, {
+    headers: {
+      'Content-type': 'application/json',
+      'x-access-token': localStorage.getItem('token'),
+    },
+  })
+}
+
+export const saveLike = async function (post_id) {
+  return await axios.get('/posts/like/' + post_id, {
+    headers: {
+      'Content-type': 'application/json',
+      'x-access-token': localStorage.getItem('token'),
+    },
+  })
+}
+
+export const saveUnlike = async function (post_id) {
+  return await axios.get('/posts/unlike/' + post_id, {
     headers: {
       'Content-type': 'application/json',
       'x-access-token': localStorage.getItem('token'),

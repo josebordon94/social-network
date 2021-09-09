@@ -43,7 +43,7 @@ const Navigation = () => {
               <Image
                 src={profilePhoto}
                 roundedCircle
-                style={{ height: '28px', width: '28px' }}
+                style={{ height: '28px', width: '28px', objectFit: 'cover' }}
                 className="ms-auto"
               />
             }
@@ -52,12 +52,12 @@ const Navigation = () => {
             <NavDropdown.Item as={Link} to="/new">
               <ImageIcon /> New post
             </NavDropdown.Item>
-            <NavDropdown.Item as={Link} to="/profile/1">
+            <NavDropdown.Item as={Link} to="/profile/me">
               <PersonIcon /> My profile
             </NavDropdown.Item>
-            <NavDropdown.Item href="#action4">
+            {/* <NavDropdown.Item href="#action4">
               <TurnedInIcon /> Favourites
-            </NavDropdown.Item>
+            </NavDropdown.Item> */}
             <NavDropdown.Divider />
             <NavDropdown.Item onClick={logout}>
               <ExitToAppIcon /> Logout
