@@ -13,6 +13,14 @@ var app = express()
 const jwtConfig = require('./bin/jwtConfig')
 const { verifyJWT } = require('./bin/jwtConfig')
 
+//img uploads folder
+var fs = require('fs')
+var dir = './public/img'
+
+if (!fs.existsSync(dir)) {
+  fs.mkdirSync(dir, { recursive: true })
+}
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')

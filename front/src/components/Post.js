@@ -82,7 +82,7 @@ const Post = (props) => {
               <span style={{ marginLeft: '7px' }}>{username}</span>
             </span>
           </Link>
-          <OptionsModal />
+          {/* <OptionsModal /> */}
         </div>
         <Image src={getImageUrl(file)} fluid />
         <div className="d-flex justify-content-between my-2">

@@ -66,9 +66,9 @@ const Navigation = () => {
           <Nav.Link as={Link} to="/main" style={{ fontSize: '2rem' }}>
             <MdHome />
           </Nav.Link>
-          <Nav.Link as={Link} to="/inbox" style={{ fontSize: '2rem' }}>
+          {/* <Nav.Link as={Link} to="/inbox" style={{ fontSize: '2rem' }}>
             <MdInbox />
-          </Nav.Link>
+          </Nav.Link> */}
         </Nav>
       </Container>
     </Navbar>

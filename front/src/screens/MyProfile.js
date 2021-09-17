@@ -50,8 +50,10 @@ const MyProfile = (props) => {
                 height: '8rem',
                 boxShadow: '2px 2px 2px 2px #444444',
                 objectFit: 'cover',
+                marginLeft: '15px',
+                marginRight: '15px',
               }}
-              className="text-center"
+              className="text-center pl-2"
             />
           </div>
           <div className="col-xs-8 col-sm-9 col-md-8 p-4 d-flex align-items-center justify-content-center">
